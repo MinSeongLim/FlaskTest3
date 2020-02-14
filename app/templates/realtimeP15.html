@@ -1,0 +1,281 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>모델관리시스템</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='assets/css/font.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='assets/css/reset.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='assets/css/main.css')}}">    
+
+    <!-- Echart import-->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+   
+       
+    <!-- Socket import-->
+    <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+       
+    <!--[if lt IE]>
+		<script src="assets/js/html5shiv.min.js"></script>
+		<script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div>
+    <div class="container">
+        <!-- start:header -->
+        <header>
+            <div class="info-bar">
+                <div class="inner">
+                    <h1><a href='/home'>모델관리시스템</a></h1>
+                    <div class="info-box">
+                        <ul class="info-list">
+                            
+                            <li>
+                                <a href="#" class="user-link">
+                                    <span class="user-photo"></span>
+                                    <span class="user-name"></span>
+                                </a>
+                                <div class="slidedown-menu">
+                                    <button class="btn menu-link menu1" onclick="javascript:openWin();">내정보관리</button>
+                                    <button href="#" class="btn menu-link menu2" onclick="javascript:openWin();">사용자등록</button>
+                                    <button class="btn menu-link menu3" onclick="location.href='/logout'">로그아웃</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div> 
+            <div class="nav-side">
+                <div class="inner">
+                    <nav>
+                        <h2 class="blind">모델관리</h2>
+                        <ul class="gnb">
+                            <li><a href='/home' class="gnb-link pos-r">소개</a></li>
+                            <li><a href='/produce/index/1' class="gnb-link pos-r">모델등록관리</a></li>
+                            <li><a class="gnb-link pos-r">모델수행검색</a></li> 
+                            <li class="pos-r">
+                                <a href="#" class = "gnb-link pos-r on">실시간 정보</a>
+                                <div class="slidedown-menu">
+                                    <button class="btn menu-link menu4" onclick="location.href='/realtime/P5'">P5</button>
+                                    <button class="btn menu-link menu4" onclick="location.href='/realtime/P8'">P8</button>
+                                    <button class="btn menu-link menu4">P15</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>              
+        </header>
+        <!-- end:header -->
+        <!-- start:content-area -->
+        <div class="main-cont">
+            <section>
+                <div id="chart6" style="width: 1200px; height: 300px;"></div>
+                <div id="chart13" style="width: 1200px; height: 300px;"></div>
+                <div id="chart17" style="width: 1200px; height: 300px;"></div>
+                <div id="chart18" style="width: 1200px; height: 300px;"></div>
+                <div id="chart19" style="width: 1200px; height: 300px;"></div>                
+                <div id="chart20" style="width: 1200px; height: 300px;"></div>                
+            </section>               
+
+            <script type="text/javascript" charset="utf-8">
+                function Chart(chart)
+                {
+                    this.time = [];
+                    this.value = [];
+                    this.num = 0;
+                    this.chart = chart
+                }
+        
+                var chart6 = new Chart(echarts.init(document.getElementById('chart6')));
+                var chart13 = new Chart(echarts.init(document.getElementById('chart13')));
+                var chart17 = new Chart(echarts.init(document.getElementById('chart17')));
+                var chart18 = new Chart(echarts.init(document.getElementById('chart18')));
+                var chart19 = new Chart(echarts.init(document.getElementById('chart19')));        
+                var chart20 = new Chart(echarts.init(document.getElementById('chart20')));        
+                for(var i = 6 ; i < 21 ; i++)
+                {
+                    if(i == 6 || i == 13 || i==17 || i == 18 || i == 19 || i ==20)
+                    {
+                        var myChart = echarts.init(document.getElementById('chart' + i));
+                        myChart.setOption({
+                            title: {
+                                text: i + '호기'
+                            },
+                            tooltip: {},
+                            xAxis: {
+                                data: []
+                            },
+                            yAxis: {},
+                            series: [{
+                                name: 'value',
+                                type: 'line',
+                                data: []
+                            }]
+                        });
+                    }
+                    
+                }
+            </script>
+        
+            <script type="text/javascript" charset="utf-8">
+        
+                $(document).ready(function () {
+                    var arr = new Array();
+                    namespace = '/p15';
+                    var socket = io(namespace);
+                    socket.on('0106', function (msg) {
+                        update_mychart(msg, chart1);                
+                    });
+                    socket.on('0113', function (msg) {
+                        update_mychart(msg, chart2);                
+                    });
+                    socket.on('0117', function (msg) {
+                        update_mychart(msg, chart3);                
+                    });
+                    socket.on('0118', function (msg) {
+                        update_mychart(msg, chart4);                
+                    });
+                    socket.on('0119', function (msg) {
+                        update_mychart(msg, chart5);                
+                    });
+                    socket.on('0120', function (msg) {
+                        update_mychart(msg, chart5);                
+                    });
+                });
+            </script>
+        
+            <script type="text/javascript" charset="utf-8">        
+                
+                var update_mychart = function (res, chart)
+                {            
+                    var data = res.data.data;
+                    var result = res.data.result[0][0];            
+        
+                    if (chart.time.length == 0) {
+        
+                        for (var i = 0; i < result + 10; i++) {
+                            chart.time.push(i)
+                            chart.value.push('')
+                        }
+        
+                        for (var i = 0; i < 10; i++) {
+                            chart.value[chart.num++] = data[i][2];
+                        }
+        
+                    } else {
+                        chart.value[chart.num++] = data[9][2];
+                    }
+        
+                    chart.chart.setOption({
+                        xAxis: {
+                            data: chart.time
+                        },
+                        series: [{
+                            name: 'value',
+                            data: chart.value
+                        }, {
+                            name: '사용데이터',
+                            type: 'line',
+                            color: 'green',
+                            markArea: {
+                                data: [
+                                    [{ xAxis: chart.num - 10 }, { xAxis: chart.num - 1 }]
+                                ],
+                            }
+                        },
+                        {
+                            name: '예측결과',
+                            type: 'line',
+                            color: 'red',
+                            markArea: {
+                                data: [
+                                    [{ xAxis: result }, { xAxis: result + 1 }]
+                                ],
+                            }
+                        }]
+                    });
+                };                    //         //myChart.showLoading();
+            </script>
+           
+        </div>
+        <div class="join">
+            <div class="join-mask"></div>
+            <div class="container">
+                <div class="join-cont">
+                    <div class="inner">
+                       <div class="top-bar">
+                            <h1>사용자 정보 변경</h1>
+                            <button class="btn close-btn">
+                                <span></span><span></span>
+                            </button>
+                       </div>
+                       <div class="info-cont">
+                           <form>
+                               <div class="info-photo">
+                                   <img src="{{url_for('static', filename='assets/img/common/user-3.png')}}" alt="user-photo">
+                                   <input type="file" class="info-photo-file">
+                               </div>
+                               <div class="input-box">
+                                   <label>아이디</label>
+                                   <input type="text" placeholder="nci">
+                               </div>
+                               <div class="input-box">
+                                   <label>이름</label>
+                                   <input type="text" placeholder="앤시정보기술">
+                               </div>
+                               <div class="input-box">
+                                   <label>직급</label>
+                                   <input type="text" placeholder="사원">
+                               </div>
+                               <div class="input-box">
+                                   <label>이메일</label>
+                                   <input type="text" placeholder="nci@ncin.co.kr">
+                               </div>
+                               <div class="input-box">
+                                   <label>알림여부</label>
+                                   <input type="checkbox">
+                               </div>
+                               <div class="input-box">
+                                   <label>비밀번호변경</label>
+                                   <input type="checkbox">
+                               </div>
+                               <div class="input-box">
+                                   <label>새로운 비밀번호</label>
+                                   <input type="password" placeholder="password">
+                               </div>
+                               <div class="input-box">
+                                   <label>새로운 비밀번호 확인</label>
+                                   <input type="password" placeholder="password">
+                               </div>
+                               <div class="btn-group pos-r">
+                                   <button class="btn btn-primary" value="취소">취소</button>
+                                   <button class="btn btn-secondary" value="저장">저장</button>
+                               </div>
+                           </form>
+                       </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end:content-area -->
+        <!-- start:footer -->
+        <footer class="blind">
+            <div class=inner>
+                <h2 class="footer-logo">(주)앤시정보기술</h2>
+            </div>
+        </footer>
+        <!-- end:footer -->
+    </div>
+</div>
+<!-- scripts -->
+<script src="{{url_for('static', filename='assets/js/jquery-3.3.1.min.js')}}"></script>
+<script src="{{url_for('static', filename='assets/js/script.js')}}"></script>
+<script>
+    //onclick="javascript:openWin();"
+   function openWin(){$('.join').show();}  
+</script>
+</body>
+</html>

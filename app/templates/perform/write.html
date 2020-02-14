@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>모델관리시스템</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/font.css">
+    <link rel="stylesheet" href="../assets/css/reset.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <!--[if lt IE]>
+		<script src="assets/js/html5shiv.min.js"></script>
+		<script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div>
+    <div class="container">
+        <!-- start:header -->
+        <header>
+            <div class="info-bar">
+                <div class="inner">
+                    <h1><a href="../produce/index.html">모델수행시스템</a></h1>
+                    <div class="info-box">
+                        <ul class="info-list">
+                            <li>2020-01-21 03:53:57</li>
+                            <li>
+                                <a href="#" class="user-link">
+                                    <span class="user-photo"></span>
+                                    <span class="user-name">nci-user01</span>
+                                </a>
+                                <div class="slidedown-menu">
+                                    <button class="btn menu-link menu1" onclick="javascript:openWin();">내정보관리</button>
+                                    <button href="#" class="btn menu-link menu2" onclick="javascript:openWin();">사용자등록</button>
+                                    <button href="#" class="btn menu-link menu3" onclick="location.href='../login.html'">로그아웃</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div> 
+            <div class="nav-side">
+                <div class="inner">
+                    <nav>
+                        <h2 class="blind">모델관리</h2>
+                        <ul class="gnb">
+                            <li><a href="../produce/index.html" class="gnb-link pos-r">모델등록관리</a></li>
+                            <li><a href="index.html" class="gnb-link pos-r on">모델수행검색</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            
+        </header>
+        <!-- end:header -->
+        <!-- start:content-area -->
+        <div class="main-cont">
+            <section>
+				<div class="inner">
+                    <div class="cont2">
+                        <table>
+                            <tr>
+                                <th>모델분류명</th>
+                                <td>
+                                    <input type="text">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>모델생성이력데이터</th>
+                                <td>
+                                    <input type="text">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>등록일자</th>
+                                <td>
+                                    <input type="date">
+                                </td>
+                            </tr>
+                            <tr class="board-cont">
+                                <td colspan="2">
+                                    <textarea cols="30" rows="10"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>첨부파일</th>
+                                <td><input type="file"></td>
+                            </tr>
+                        </table>
+                        <div class="btn-group pos-r">
+                            <button class="btn btn-primary" onclick="location.href='board.html'">수정</button>
+                            <button class="btn btn-primary">삭제</button>
+                            <button class="btn btn-primary" onclick="location.href='index.html'">등록</button>    
+                        </div>
+                    </div>
+				</div>
+			</section>
+        </div>
+        <div class="join">
+            <div class="join-mask"></div>
+            <div class="container">
+                <div class="join-cont">
+                    <div class="inner">
+                       <div class="top-bar">
+                            <h1>사용자 정보 변경</h1>
+                            <button class="btn close-btn">
+                                <span></span><span></span>
+                            </button>   
+                       </div>
+                       <div class="info-cont">
+                           <form>
+                               <div class="info-photo">
+                                   <img src="../assets/img/common/user-3.png" alt="user-photo">
+                                   <input type="file" class="info-photo-file">
+                               </div>
+                               <div class="input-box">
+                                   <label>아이디</label>
+                                   <input type="text" placeholder="nci">
+                               </div>
+                               <div class="input-box">
+                                   <label>이름</label>
+                                   <input type="text" placeholder="앤시정보기술">
+                               </div>
+                               <div class="input-box">
+                                   <label>직급</label>
+                                   <input type="text" placeholder="사원">
+                               </div>
+                               <div class="input-box">
+                                   <label>이메일</label>
+                                   <input type="text" placeholder="nci@ncin.co.kr">
+                               </div>
+                               <div class="input-box">
+                                   <label>알림여부</label>
+                                   <input type="checkbox">
+                               </div>
+                               <div class="input-box">
+                                   <label>비밀번호변경</label>
+                                   <input type="checkbox">
+                               </div>
+                               <div class="input-box">
+                                   <label>새로운 비밀번호</label>
+                                   <input type="password" placeholder="password">
+                               </div>
+                               <div class="input-box">
+                                   <label>새로운 비밀번호 확인</label>
+                                   <input type="password" placeholder="password">
+                               </div>
+                               <div class="btn-group pos-r">
+                                   <button class="btn btn-primary" value="취소">취소</button>
+                                   <button class="btn btn-secondary" value="저장">저장</button>
+                               </div>
+                           </form>
+                       </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end:content-area -->
+        <!-- start:footer -->
+        <footer class="blind">
+            <div class=inner>
+                <h2 class="footer-logo">(주)앤시정보기술</h2>
+            </div>
+        </footer>
+        <!-- end:footer -->
+    </div>
+</div>
+<!-- scripts -->
+<script src="../assets/js/jquery-3.3.1.min.js"></script>
+<script src="../assets/js/slick.min.js"></script>
+<script src="../assets/js/script.js"></script>
+<script>
+    //onclick="javascript:openWin();"
+   function openWin(){$('.join').show();}  
+</script>
+
+</body>
+</html>
